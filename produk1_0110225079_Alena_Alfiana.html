@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kemeja Keren | NFStore</title>
+
+    <!-- ✅ Tambahkan ini agar ikon Font Awesome muncul -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f9f9f9;
+      }
+
+      header {
+        background-color: #a8a3fa;
+        padding: 10px 20px;
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .navbar .logo {
+        font-weight: bold;
+        font-size: 18px;
+        color: white;
+      }
+
+      .navbar nav a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: white;
+        transition: 0.2s ease;
+      }
+
+      .navbar nav a:hover {
+        opacity: 0.8;
+      }
+
+      .search-cart {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .search-cart input {
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+      }
+
+      .breadcrumb {
+        margin: 20px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .product-detail {
+        display: flex;
+        gap: 40px;
+        margin: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      .product-image {
+        flex: 1;
+        text-align: center;
+      }
+
+      .main-image {
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none; /* default hide all, will show by :checked */
+      }
+
+      /* --- Thumbs Section --- */
+      .thumbs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 10px 0;
+      }
+
+      .thumb {
+        width: 60px;
+        height: 60px;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .thumb:hover {
+        border-color: #6d6bfa;
+        transform: scale(1.05);
+      }
+
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        background-color: #6d6bfa; /* warna ungu cerah */
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 10px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .btn:hover {
+        background-color: #4f4af5;
+        transform: scale(1.05);
+      }
+
+      .product-info {
+        flex: 1;
+      }
+
+      .price {
+        font-size: 20px;
+        color: #c00;
+        margin-bottom: 5px;
+      }
+
+      .reviews {
+        font-size: 14px;
+        color: #777;
+      }
+
+      .variant label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+      }
+
+      .colors,
+      .sizes {
+        display: flex;
+        gap: 10px;
+        margin-top: 5px;
+      }
+
+      .size label {
+        border: 1px solid #ccc;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .size label:hover {
+        background-color: #4f4af5;
+        color: white;
+        transform: scale(1.05);
+      }
+
+      /* style tombol warna (label) */
+      .color {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: white;
+        text-align: center;
+        user-select: none;
+      }
+      .color.black {
+        background-color: black;
+        color: white;
+      }
+      .color.white {
+        background-color: white;
+        color: black;
+      }
+
+      /* hidden radios */
+      input[type="radio"].color-radio {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+      }
+
+      /* When a radio is checked, style its label as active */
+      input#hitam:checked + label.color.black,
+      input#putih:checked + label.color.white {
+        outline: 3px solid #6d6bfa;
+        transform: translateY(-2px);
+      }
+
+      #hitam:checked ~ .product-detail .product-image .main-image img.hitam {
+        display: block;
+      }
+      #putih:checked ~ .product-detail .product-image .main-image img.putih {
+        display: block;
+      }
+
+      .description {
+        margin: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+      }
+
+      /* ✅ Cart icon style */
+      .cart-link {
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        position: relative;
+      }
+
+      .cart-link i {
+        color: white;
+        font-size: 20px;
+      }
+
+      /* 🔢 Badge kecil */
+      .cart-link .badge {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background: red;
+        color: white;
+        font-size: 10px;
+        border-radius: 50%;
+        padding: 2px 5px;
+      }
+
+      .cart-link:hover {
+        opacity: 0.8;
+      }
+
+      /* responsive tweak */
+      @media (max-width: 700px) {
+        .product-detail {
+          flex-direction: column;
+        }
+        .main-image {
+          width: 80%;
+          height: 320px;
+        }
+      }
+
+      .description p {
+        text-align: justify;
+        line-height: 1.8; /* biar teks lebih enak dibaca */
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="navbar">
+        <div class="logo">NFStore.com</div>
+        <nav>
+          <a href="#">Fashion Pria</a>
+          <a href="#">Fashion Wanita</a>
+          <a href="#">Fashion Muslim</a>
+        </nav>
+        <div class="search-cart">
+          <input type="text" placeholder="search" />
+          <a href="#" class="cart-link">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="badge">1</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Home</a> › <a href="#">Fashion Pria</a> › Kemeja Keren
+      </div>
+
+      <input type="radio" name="warna" id="hitam" class="color-radio" checked />
+      <label for="hitam" class="color black" aria-hidden="true" hidden>
+        Hitam
+      </label>
+
+      <input type="radio" name="warna" id="putih" class="color-radio" />
+      <label for="putih" class="color white" aria-hidden="true" hidden>
+        Putih
+      </label>
+
+      <section class="product-detail">
+        <div class="product-image">
+          <div class="main-image" role="img" aria-label="Gambar produk">
+            <img
+              class="hitam"
+              alt="Kaos warna hitam"
+              src="image/kemeja_hitam.jpeg"
+            />
+            <img
+              class="putih"
+              alt="Kaos warna putih"
+              src="image/kemeja_putih.jpeg"
+            />
+          </div>
+
+          <div class="thumbs" aria-hidden="true">
+            <div class="thumb">
+              <img alt="kemeja-hitam" src="image/kemeja_hitam.jpeg" />
+            </div>
+            <div class="thumb">
+              <img alt="kemeja-putih" src="image/kemeja_putih.jpeg" />
+            </div>
+          </div>
+
+          <button class="btn">Pesan</button>
+        </div>
+
+        <div class="product-info">
+          <h1>Kaos Web Developer</h1>
+          <p class="price">Rp. 85.000</p>
+          <p class="reviews">⭐⭐⭐⭐ 10 ulasan</p>
+
+          <div class="variant">
+            <p>Pilih Varian:</p>
+            <label>Warna</label>
+            <div class="colors">
+              <label for="hitam" class="color black">Hitam</label>
+              <label for="putih" class="color white">Putih</label>
+            </div>
+
+            <label>Ukuran</label>
+            <div class="sizes">
+              <div class="size"><label class="color white">M</label></div>
+              <div class="size"><label class="color white">L</label></div>
+              <div class="size"><label class="color white">XL</label></div>
+              <div class="size"><label class="color white">XXL</label></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="description">
+        <h2>Deskripsi Produk</h2>
+        <p>
+          Kaos ini dibuat dari bahan katun premium yang lembut dan breathable,
+          memastikan kenyamanan maksimal saat digunakan sepanjang hari. Dengan
+          desain eksklusif bertema <strong>Web Developer</strong>, kaos ini
+          cocok untuk kamu yang ingin tampil stylish sekaligus menunjukkan
+          passion di dunia teknologi. Cocok dipakai untuk aktivitas santai,
+          bekerja di kantor, menghadiri seminar IT, hingga ngoding di kafe
+          favoritmu. Selain itu, bahan kaos ini juga tahan lama dan mudah dicuci
+          tanpa khawatir warna akan cepat pudar. Tersedia dalam berbagai ukuran
+          (M, L, XL, XXL) serta pilihan warna elegan seperti hitam dan putih,
+          yang dapat disesuaikan dengan gaya favoritmu. Kaos ini bukan hanya
+          sekadar pakaian, tetapi juga bentuk ekspresi diri bagi para pengembang
+          web yang kreatif dan berjiwa muda.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
